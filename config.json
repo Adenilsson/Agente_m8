@@ -1,0 +1,13 @@
+{
+"id_agente":"1",
+"port":"COM18",
+"t_var":"10",
+"t_req":"10",
+"mysql_user":"fairtek",
+"mysql_pass":"fairtek2018",
+"mysql_url":"jdbc:mysql://127.0.0.1:3360/sowtek_terminacao?serverTimezone=UTC&useSSL=false",
+"NOTIFICATION_SCAN_TIME":"30000",
+"timeout_request":"2",
+"time_request":"1",
+"node":"0"
+}
