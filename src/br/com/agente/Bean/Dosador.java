@@ -22,7 +22,9 @@ public class Dosador {
     private int statusDosador;
     private int StatusMemoria;
     private int StatusRede;
-
+    private int setor;
+    
+    
     public int getId() {
         return id;
     }
@@ -117,6 +119,14 @@ public class Dosador {
 
     public void setStatusRede(int StatusRede) {
         this.StatusRede = StatusRede;
+    }
+
+    public int getSetor() {
+        return setor;
+    }
+
+    public void setSetor(int setor) {
+        this.setor = setor;
     }
     
     

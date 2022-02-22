@@ -6,6 +6,7 @@
 package br.com.agente.MsgFormat;
 
 import br.com.agente.Bean.Baias;
+import br.com.agente.Bean.Grupo;
 import br.com.agente.Bean.NetworkMsgBean;
 import br.com.agente.Bean.TransmitStatusMsg;
 import br.com.agente.Bean.XbeeMsgBean;
@@ -42,81 +43,81 @@ public class XbeeMsg {
         msg.setXbee_msg_type(MsgXbeeType.findType(data[1])); 
         int add16;
       
-//        switch(msg.getXbee_msg_type()){
-//            case ROUTE_RECORD_INDICATOR:
-//                int n_node = data[13], n=0;
-//                long addres=0;
-//                long r_addres=0;
-//                String mensagem ="";
-//                for(int i=2;i<10;i++){
-//                    addres=addres<<8;
-//                    addres=addres|(long)data[i];
-//                }
-//                msg.setAddress64(addres);
-//                add16=(data[10]*256);
-//                add16+=data[11];
-//                msg.setAddress16(add16);
-//                msg.setNum_node(data[13]);
-//                for(int i=14;i<(data.length -2);i+=2){
-//                    if(r_addres ==0){
-//                        r_addres=(data[i]*256);
-//                        r_addres+=data[i+1];
+        switch(msg.getXbee_msg_type()){
+            case ROUTE_RECORD_INDICATOR:
+                int n_node = data[13], n=0;
+                long addres=0;
+                long r_addres=0;
+                String mensagem ="";
+                for(int i=2;i<10;i++){
+                    addres=addres<<8;
+                    addres=addres|(long)data[i];
+                }
+                msg.setAddress64(addres);
+                add16=(data[10]*256);
+                add16+=data[11];
+                msg.setAddress16(add16);
+                msg.setNum_node(data[13]);
+                for(int i=14;i<(data.length -2);i+=2){
+                    if(r_addres ==0){
+                        r_addres=(data[i]*256);
+                        r_addres+=data[i+1];
+                    }
+                        mensagem += Long.toHexString(r_addres);
+                        if(mensagem.length()<4){
+                            mensagem = "0"+mensagem;
+                        }
+                        r_addres =0;
+                        
+                    
+//                    if((int)data[i]== 0){
+//                        mensagem+="00";
+//                        System.out.println(" XbeeMsg linha 67 "+ Long.toHexString(data[i]));
+//                    }else{
+//                        mensagem += Long.toHexString(data[i]);
+//                        System.out.println(" XbeeMsg linha 67 "+ Long.toHexString(data[i]));
 //                    }
-//                        mensagem += Long.toHexString(r_addres);
-//                        if(mensagem.length()<4){
-//                            mensagem = "0"+mensagem;
-//                        }
-//                        r_addres =0;
-//                        
-//                    
-////                    if((int)data[i]== 0){
-////                        mensagem+="00";
-////                        System.out.println(" XbeeMsg linha 67 "+ Long.toHexString(data[i]));
-////                    }else{
-////                        mensagem += Long.toHexString(data[i]);
-////                        System.out.println(" XbeeMsg linha 67 "+ Long.toHexString(data[i]));
-////                    }
-//                }
-////                msg.setNum_node(3);
-////                mensagem="14b1c3ed54dc";
-//                msg.setMsg(mensagem);
-//                break;
-//            case RECEIVED_PACKAGE:
-//                System.out.println("Recebendo pacote da rede xbee.");
+                }
+//                msg.setNum_node(3);
+//                mensagem="14b1c3ed54dc";
+                msg.setMsg(mensagem);
+                break;
+            case RECEIVED_PACKAGE:
+                System.out.println("Recebendo pacote da rede xbee.");
+                long address=0;
+                for(int i=2;i<10;i++){
+                    address=address<<8;
+                    address=address|(long)data[i];
+                }
+                msg.setAddress64(address);
+                add16=(data[10]*256);
+                add16+=data[11];
+                msg.setAddress16(add16);
+                NetworkMsg network_msg=new NetworkMsg();
+                System.out.println("class xbeemsg linha 98: Network_msg.format(data): "+ network_msg.format(data).getNetwork_msg_type());
+                msg.setNetworMsg(network_msg.format(data));
+                NetworkMsgBean nm=msg.getNetworMsg();
+                Grupo a_temp= nm.getGrupo(); //msg.getNetworMsg().getAnimal();
+                a_temp.setUltimoDosador(address);
+                nm.setGrupo(a_temp);
+                msg.setNetworMsg(nm);
+                System.out.println("Mac_16: "+ Long.toHexString(msg.getAddress16()));
+                System.out.println("Mac: "+ Long.toHexString(msg.getAddress64()));
+                System.out.println("baia:  "+nm.getGrupo());
 //                
-//                long address=0;
-//                for(int i=2;i<10;i++){
-//                    address=address<<8;
-//                    address=address|(long)data[i];
-//                }
-//                msg.setAddress64(address);
-//                add16=(data[10]*256);
-//                add16+=data[11];
-//                msg.setAddress16(add16);
-//                NetworkMsg network_msg=new NetworkMsg();
-//                msg.setNetworMsg(network_msg.format(data));
-//                NetworkMsgBean nm=msg.getNetworMsg();
-//                Baias a_temp= nm.getBaia(); //msg.getNetworMsg().getAnimal();
-//                a_temp.setUltimoDosador(address);
-//                nm.setBaia(a_temp);
-//                msg.setNetworMsg(nm);
-////                System.out.println("Mac_16: "+ Long.toHexString(msg.getAddress16()));
-////                System.out.println("Mac: "+ Long.toHexString(msg.getAddress64()));
-////                System.out.println("baia:  "+nm.getBaia().getBaiaNome());
-//                
-//                break;
-//            case TRANSMIT_STATUS:
-//                add16=(short) (data[3]*256);
-//                add16+=(short) data[4];
-//                msg.setAddress16(add16);
-//                TransmitStatusMsg transmitStatus = new TransmitStatusMsg();
-//                transmitStatus.setTransmitRetryCount((byte) data[5]);
-//                transmitStatus.setDeliveryStatus((byte) data[6]);
-//                transmitStatus.setDiscoveryStatus((byte) data[7]);
-//                transmitStatus.setFrameID((byte) data[2]);
-//                msg.setTransmitStatus(transmitStatus);
-//                break;
-//        }
+                break;
+            case TRANSMIT_STATUS:
+                add16=(short) (data[3]*256);
+                add16+=(short) data[4];
+                msg.setAddress16(add16);
+                TransmitStatusMsg transmitStatus = new TransmitStatusMsg();
+                transmitStatus.setTransmitRetryCount((byte) data[5]);
+                transmitStatus.setDeliveryStatus((byte) data[6]);
+                transmitStatus.setDiscoveryStatus((byte) data[7]);
+                transmitStatus.setFrameID((byte) data[2]);
+                msg.setTransmitStatus(transmitStatus);
+                break;
+        }
         return msg;
     }
     /**
@@ -150,132 +151,133 @@ public class XbeeMsg {
      */
     public byte sendNetworkMsg(long address, NetworkMsgBean msg) throws InterruptedException{
         byte char_msg[];
+        //char_msg=new byte[19];//Obs provisorio  pra não geerar erro no retorno remover quando for imprlementado.
         byte checksum;
         int start_msg=17;
-//        switch(msg.getNetwork_msg_type()){
-//            
-//            case AGENTE_UPDATE_REQUEST:
-//                char_msg=new byte[19];
-//                char_msg[2]=15;//Tamanho
-//                break;
-//            case AGENTE_DEBUG_COMMAND:
-//                char_msg=new byte[19];
-//                char_msg[2]=15;//Tamanho
-//                break;
-//            case AGENTE_ANIMAL_UPDATE:
-//                char_msg=new byte[34];
-//                char_msg[2]=30;//Tamanho
-//                short id=msg.getBaia().getID();
-//                char_msg[start_msg+1]=msg.getBaia().getDia();
-//                for(int i=0;i<2;i++){
-//                    char_msg[start_msg+2+i]=(byte)id;
-//                    id=(short) (id>>8);
-//                }
-//                long rfid=msg.getBaia().getRFID();
+        switch(msg.getNetwork_msg_type()){
+            
+            case AGENTE_UPDATE_REQUEST:
+                char_msg=new byte[19];
+                char_msg[2]=15;//Tamanho
+                break;
+            case AGENTE_DEBUG_COMMAND:
+                char_msg=new byte[19];
+                char_msg[2]=15;//Tamanho
+                break;
+            case AGENTE_ANIMAL_UPDATE:
+                char_msg=new byte[34];
+                char_msg[2]=30;//Tamanho
+                short id = (short) msg.getGrupo().getId();
+                char_msg[start_msg+1]=(byte) msg.getGrupo().getTbBaiaId();
+                for(int i=0;i<2;i++){
+                    char_msg[start_msg+2+i]=(byte)id;
+                    id=(short) (id>>8);
+                }
+//                long rfid=msg.getGrupo().getRFID();
 //                for(int i=0;i<8;i++){
 //                    char_msg[start_msg+4+i]=(byte)rfid;
 //                    rfid=rfid>>8;
 //                }
-//                char_msg[29]=msg.getBaia().getReceipe();
-//                char_msg[30] =(byte) msg.getBaia().getQR();
-//                char_msg[31]=(byte) msg.getBaia().getScore();
-//                char_msg[32]= (byte)msg.getBaia().getT_feed();
-//                break;
-//            case AGENTE_RECEIPE_UPDATE_A:
-//                char_msg=new byte[50];
-//                char_msg[2]=46;//Tamanho
-//                char_msg[start_msg+1]=msg.getReceipe().getID();
-//                for(int i=0;i<30;i++){
-//                    char_msg[start_msg+2+i]=(byte) msg.getReceipe().getQRdia()[i];
-//                }
-//                break;
-//            case AGENTE_RECEIPE_UPDATE_B:
-//                char_msg=new byte[50];
-//                char_msg[2]=46;//Tamanho
-//                char_msg[start_msg+1]=msg.getReceipe().getID();
-//                for(int i=0;i<30;i++){
-//                    char_msg[start_msg+2+i]=(byte) msg.getReceipe().getQRdia()[i+30];
-//                }
-//                break;
-//            case AGENTE_RECEIPE_UPDATE_C:
-//                char_msg=new byte[50];
-//                char_msg[2]=46;//Tamanho
-//                char_msg[start_msg+1]=msg.getReceipe().getID();
-//                for(int i=0;i<30;i++){
-//                    char_msg[start_msg+2+i]=(byte) msg.getReceipe().getQRdia()[i+60];
-//                }
-//                break;            
-//            case AGENTE_RECEIPE_UPDATE_D:
-//                char_msg=new byte[50];
-//                char_msg[2]=46;//Tamanho
-//                char_msg[start_msg+1]=msg.getReceipe().getID();
-//                for(int i=0;i<30;i++){
-//                    char_msg[start_msg+2+i]=(byte) msg.getReceipe().getQRdia()[i+90];
-//                }
-//                break;
-//            case AGENTE_NEW_DEVICE_UP:
-//                char_msg=new byte[23];
-//                char_msg[2]=19;//Tamanho
-//                char_msg[start_msg+1]=(byte)msg.getNReceipe();
-//                short val=msg.getNRFID();
-//                //RFID
-//                for(int i=0;i<2;i++){
-//                    char_msg[start_msg+2+i]=(byte)val;
-//                    val=(short) (val>>8);
-//                }
-//                break;
-//            case AGENTE_PARAMS_UP:
-//                char_msg=new byte[36];
-//                char_msg[2]=32;//Tamanho
-//                for(int i=0;i<2;i++){
-//                    char_msg[start_msg+2+i]=(byte)msg.getDosadorTime().getMotorFeed();
-//                    msg.getDosadorTime().setMotorFeed((short) (msg.getDosadorTime().getMotorFeed()>>8));
-//                    char_msg[start_msg+4+i]=(byte)msg.getDosadorTime().getMotorReverse();
-//                    msg.getDosadorTime().setMotorReverse((short) (msg.getDosadorTime().getMotorReverse()>>8));
-//                    char_msg[start_msg+6+i]=(byte)msg.getDosadorTime().getMotorStop();
-//                    msg.getDosadorTime().setMotorStop((short) (msg.getDosadorTime().getMotorStop()>>8));
-//                    char_msg[start_msg+8+i]=(byte)msg.getDosadorTime().getFeedBegin();
-//                    msg.getDosadorTime().setFeedBegin((short) (msg.getDosadorTime().getFeedBegin()>>8));
-//                    char_msg[start_msg+10+i]=(byte)msg.getDosadorTime().getFeed();
-//                    msg.getDosadorTime().setFeed((short) (msg.getDosadorTime().getFeed()>>8));
-//                    char_msg[start_msg+12+i]=(byte)msg.getDosadorTime().getAnimalOut();
-//                    msg.getDosadorTime().setAnimalOut((short) (msg.getDosadorTime().getAnimalOut()>>8));                     
-//                }
-//                break;
-//            case AGENTE_DATE_HOUR_UP:
-//                ;
-//                char_msg=new byte[50];
-//                char_msg[2]=46;//Tamanho
-//                //Data-Hora
-//                Date dn = new Date();
-//                Calendar caln = new GregorianCalendar();
-//                caln.setTime(dn);
-//                long n_time=dataFormat(caln);
-//                for(int i=0;i<4;i++){
-//                    char_msg[start_msg+4+i]=(byte)n_time;
-//                    n_time=(n_time>>8);
-//                }
-//                for(int i=0;i<2;i++){
-//                    char_msg[start_msg+2+i]=(byte)msg.getNewDay();
-//                    msg.setNewDay((short) (msg.getNewDay()>>8));
-//                }
-//                break;
-//            case AGENTE_DOSADOR_RESET:
-//                char_msg=new byte[21];
-//                char_msg[2]=17;//Tamanho
-//                char_msg[start_msg+2]='R';//Caractere de Reset
-//                break;
-//            case AGENTE_NEW_DEVICE_END:
-//                char_msg=new byte[19];
-//                char_msg[2]=15;//Tamanho
-//                break;
-//            case AGENTE_NEW_DEVICE_REQ:
-//                 char_msg=new byte[19];
-//                char_msg[2]=15;//Tamanho
-//                break;
-//            default:
-//                return 0;
-//        }
+                char_msg[29]=(byte) msg.getGrupo().getTbCurvaId();
+                char_msg[30] =(byte) msg.getGrupo().getQR();
+                char_msg[31]=(byte) msg.getGrupo().getScore();
+                char_msg[32]= (byte)msg.getGrupo().getT_feed();
+                break;
+            case AGENTE_RECEIPE_UPDATE_A:
+                char_msg=new byte[50];
+                char_msg[2]=46;//Tamanho
+                char_msg[start_msg+1]=msg.getReceipe().getID();
+                for(int i=0;i<30;i++){
+                    char_msg[start_msg+2+i]=(byte) msg.getReceipe().getQRdia()[i];
+                }
+                break;
+            case AGENTE_RECEIPE_UPDATE_B:
+                char_msg=new byte[50];
+                char_msg[2]=46;//Tamanho
+                char_msg[start_msg+1]=msg.getReceipe().getID();
+                for(int i=0;i<30;i++){
+                    char_msg[start_msg+2+i]=(byte) msg.getReceipe().getQRdia()[i+30];
+                }
+                break;
+            case AGENTE_RECEIPE_UPDATE_C:
+                char_msg=new byte[50];
+                char_msg[2]=46;//Tamanho
+                char_msg[start_msg+1]=msg.getReceipe().getID();
+                for(int i=0;i<30;i++){
+                    char_msg[start_msg+2+i]=(byte) msg.getReceipe().getQRdia()[i+60];
+                }
+                break;            
+            case AGENTE_RECEIPE_UPDATE_D:
+                char_msg=new byte[50];
+                char_msg[2]=46;//Tamanho
+                char_msg[start_msg+1]=msg.getReceipe().getID();
+                for(int i=0;i<30;i++){
+                    char_msg[start_msg+2+i]=(byte) msg.getReceipe().getQRdia()[i+90];
+                }
+                break;
+            case AGENTE_NEW_DEVICE_UP:
+                char_msg=new byte[23];
+                char_msg[2]=19;//Tamanho
+                char_msg[start_msg+1]=(byte)msg.getNReceipe();
+                short val=msg.getNRFID();
+                //RFID
+                for(int i=0;i<2;i++){
+                    char_msg[start_msg+2+i]=(byte)val;
+                    val=(short) (val>>8);
+                }
+                break;
+            case AGENTE_PARAMS_UP:
+                char_msg=new byte[36];
+                char_msg[2]=32;//Tamanho
+                for(int i=0;i<2;i++){
+                    char_msg[start_msg+2+i]=(byte)msg.getDosadorTime().getMotorFeed();
+                    msg.getDosadorTime().setMotorFeed((short) (msg.getDosadorTime().getMotorFeed()>>8));
+                    char_msg[start_msg+4+i]=(byte)msg.getDosadorTime().getMotorReverse();
+                    msg.getDosadorTime().setMotorReverse((short) (msg.getDosadorTime().getMotorReverse()>>8));
+                    char_msg[start_msg+6+i]=(byte)msg.getDosadorTime().getMotorStop();
+                    msg.getDosadorTime().setMotorStop((short) (msg.getDosadorTime().getMotorStop()>>8));
+                    char_msg[start_msg+8+i]=(byte)msg.getDosadorTime().getFeedBegin();
+                    msg.getDosadorTime().setFeedBegin((short) (msg.getDosadorTime().getFeedBegin()>>8));
+                    char_msg[start_msg+10+i]=(byte)msg.getDosadorTime().getFeed();
+                    msg.getDosadorTime().setFeed((short) (msg.getDosadorTime().getFeed()>>8));
+                    char_msg[start_msg+12+i]=(byte)msg.getDosadorTime().getAnimalOut();
+                    msg.getDosadorTime().setAnimalOut((short) (msg.getDosadorTime().getAnimalOut()>>8));                     
+                }
+                break;
+            case AGENTE_DATE_HOUR_UP:
+                ;
+                char_msg=new byte[50];
+                char_msg[2]=46;//Tamanho
+                //Data-Hora
+                Date dn = new Date();
+                Calendar caln = new GregorianCalendar();
+                caln.setTime(dn);
+                long n_time=dataFormat(caln);
+                for(int i=0;i<4;i++){
+                    char_msg[start_msg+4+i]=(byte)n_time;
+                    n_time=(n_time>>8);
+                }
+                for(int i=0;i<2;i++){
+                    char_msg[start_msg+2+i]=(byte)msg.getNewDay();
+                    msg.setNewDay((short) (msg.getNewDay()>>8));
+                }
+                break;
+            case AGENTE_DOSADOR_RESET:
+                char_msg=new byte[21];
+                char_msg[2]=17;//Tamanho
+                char_msg[start_msg+2]='R';//Caractere de Reset
+                break;
+            case AGENTE_NEW_DEVICE_END:
+                char_msg=new byte[19];
+                char_msg[2]=15;//Tamanho
+                break;
+            case AGENTE_NEW_DEVICE_REQ:
+                 char_msg=new byte[19];
+                char_msg[2]=15;//Tamanho
+                break;
+            default:
+                return 0;
+        }
         char_msg[0]=0x7e;
         char_msg[1]=0;
         char_msg[3]=(byte) MsgXbeeType.TRANSMIT_REQUEST.getValor();
@@ -301,6 +303,7 @@ public class XbeeMsg {
         char_msg[char_msg.length-1]=checksum;
         conexao.Enviar(char_msg);
         return char_msg[4];
+       
     }
     /**
      * Envia a mensagem e aguarda a resposta do Transmit status, confirmando a entrega ao destinatário.

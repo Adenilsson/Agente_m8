@@ -19,8 +19,8 @@ public class MySqlConfig {
     
     
     public static Connection getConnection(JSONObject obj) throws Exception {
-
-            String mysqlClass = "com.mysql.jdbc.Driver";
+             String mysqlClass = "com.mysql.cj.jdbc.Driver";
+            //String mysqlClass = "com.mysql.jdbc.Driver";
             String mysqlUser = (String) obj.get("mysql_user");//"fairtek";
             System.out.println("Usuario: "+(String)obj.get("mysql_user"));
             String mysqlPass = (String) obj.get("mysql_pass");//"ZamtxR6DWe2T25BL";

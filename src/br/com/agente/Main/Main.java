@@ -120,16 +120,20 @@ public class Main extends Thread implements Observer{
         Baias baia;
         
         int i = 0;
-        try{
-            System.out.println("Mac "+msg.getAddress64()+" Mac16"+msg.getAddress16()+" TransmitStatus "+msg.getTransmitStatus().getDeliveryStatus()+" MSG "+msg.getMsg());
-            System.out.println("msg.getNetworMsg().getNetwork_msg_type() "+msg.getNetworMsg().getNetwork_msg_type());
-        }catch(Exception ex){
-            Logger.getLogger("[" + new Date() + " ] " + ex);
-        }
+        //try{
+            //System.out.println("["+ new Date()+"] Class Main linha 124: Mac "+msg.getAddress64()+" Mac16"+msg.getAddress16()+" TransmitStatus "+msg.getTransmitStatus().getDeliveryStatus()+" MSG "+msg.getMsg());
+            //System.out.println("["+ new Date()+"] Class Main linha 125: AGENTE_NEW_DEVICE_UP msg.getNetworMsg().getNetwork_msg_type() "+msg.getNetworMsg().getNetwork_msg_type());
+        //}catch(Exception ex){
+            //Logger.getLogger("[" + new Date() + " ] " + ex);
+        //}
+        System.out.println("["+ new Date()+"] Class Main linha 134: Tipo da notificação recebida da rede xbee: "+ msg.getXbee_msg_type());
+              //msg.getXbee_msg_type()
         switch (msg.getXbee_msg_type()) {
             case ROUTE_RECORD_INDICATOR:
                 break;
             case RECEIVED_PACKAGE:
+                System.out.println("["+ new Date()+"] Class Main linha 134: "+msg.getNetworMsg().getNetwork_msg_type());
+                      //msg.getNetworMsg().getNetwork_msg_type()
                 switch (msg.getNetworMsg().getNetwork_msg_type()) {
                     case DOSADOR_STACK_STATUS:
                         System.out.println("Notificação DOSADOR_STACK_STAUS");
@@ -144,7 +148,7 @@ public class Main extends Thread implements Observer{
                         System.out.println("Notificação DOSADOR_NEW_DEVICE");
                         //Insere o novo dosador no Banco de dados ainda não configurado
                         try {
-                            //System.out.println("[" + new Date() + " ]  A L: 252:   Novo Dosador: Mac "+ Long.toHexString(msg.getAddress64())+" Adderres16: "+ Integer.toHexString(msg.getAddress16()));
+                            System.out.println("["+ new Date()+"] Class Main linha 149:    Novo Dosador: Mac "+ Long.toHexString(msg.getAddress64())+" Adderres16: "+ Integer.toHexString(msg.getAddress16()));
                             new ServiceDao(config_jsom).insereDosador(Long.toHexString(msg.getAddress64()), Long.toHexString(msg.getAddress16()));
                             new ServiceDao(config_jsom).insereNotificacaoNovoDosador(Long.toHexString(msg.getAddress64()));
                         } catch (Exception ex) {
@@ -207,7 +211,7 @@ public class Main extends Thread implements Observer{
             }
            
             synchronized (this) {
-                System.out.println("sinc.getVal = "+ sinc.getVal());
+                System.out.println("["+ new Date()+"] Class Main linha 212: sinc.getVal = "+ sinc.getVal());
                 if (sinc.getVal() == 4) {
                     sinc.setVal(1);
                 }
@@ -258,7 +262,7 @@ public class Main extends Thread implements Observer{
         }
 
         private int scanear() throws InterruptedException {
-            System.out.println("Aqui eu busco os dosadores.");
+            System.out.println("["+ new Date()+"] Class Main linha 263: Aqui eu busco os dosadores.");
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             this.wait(5000);
             return 0;
@@ -367,17 +371,19 @@ public class Main extends Thread implements Observer{
         public void main(String[] args) throws FileNotFoundException, IOException {
            final ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
             ses.scheduleWithFixedDelay(() -> {
+                
                try {
                     Notificacoes notfi = new ServiceDao(config_jsom).busacaNotificacoesAgente(this.porta);
-                    if(notfi.getCodigo()!=null){
-                        System.out.println("Notificaçõa: "+notfi.getCodigo());
-                        switch(notfi.getCodigo()){
+                    System.out.println("["+ new Date()+"] Class Main linha 375: Tipo de notificação :"+notfi.getDescricao());
+                    if(notfi.getDescricao()!=null){
+                        System.out.println("Notificaçõa: "+notfi.getDescricao());
+                        switch(notfi.getDescricao()){
                             case "NOPEN":
-                                System.out.println("Abrindo rede na porata:"+ notfi.getPorta());
+                                System.out.println("["+ new Date()+"] Class Main linha 134: Abrindo rede na porata:"+ notfi.getPorta());
                                 new ServiceDao(config_jsom).notificacaoLida(notfi.getId());
                                  try {
                                     //Abre a rede
-                                    System.out.println("Abrindo Rede na Porta: " + notfi.getPorta());
+                                    System.out.println("["+ new Date()+"] Class Main linha 384: Abrindo Rede na Porta: " + notfi.getPorta());
                                     conexao.Enviar(new byte[]{0x7E, 0x00, 0x05, 0x08, 0x01, 0x43, 0x42, 0x02, 0x6F});
                                     conexao.Enviar(new byte[]{0x7E, 0x00, 0x04, 0x08, 0x01, 0x4E, 0x44, 0x64});
                                     XbeeMsg msg_xbee = new XbeeMsg();
@@ -393,7 +399,7 @@ public class Main extends Thread implements Observer{
                                 byte ans = 2;
                                 ans = novoDosador(Long.parseLong((String) config_jsom.get("mac"), 16));
                                 wait(150);
-                                System.out.println("[" + new Date() + " ]  A L: 919:   Valor de retorno da atualizção do dosador :" + ans);
+                                System.out.println("["+ new Date()+"] Class Main linha 400:    Valor de retorno da atualizção do dosador :" + ans);
                                 
                             break;
                             case "DRSTR":

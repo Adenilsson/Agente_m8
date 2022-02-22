@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class Notificacoes {
     private int id;
-    private int tbTipoId;
+    private String descricao;
     private int tbdDescricaoId;
     private String valor;
     private String mac;
@@ -34,13 +34,15 @@ public class Notificacoes {
         this.id = id;
     }
 
-    public int getTbTipoId() {
-        return tbTipoId;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setTbTipoId(int tbTipoId) {
-        this.tbTipoId = tbTipoId;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
+
+
 
     public int getTbdDescricaoId() {
         return tbdDescricaoId;

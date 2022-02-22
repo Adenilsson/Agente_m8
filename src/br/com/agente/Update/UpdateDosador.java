@@ -108,7 +108,7 @@ public class UpdateDosador {
             status = "Alerta - Nem Todos dosadores Atualizados.";
         }
         try {
-            new ServiceDao(this.con_str).updateDosadoresSinc(d_sinc, d_n_sinc, "");
+            //new ServiceDao(this.con_str).updateDosadoresSinc(d_sinc, d_n_sinc, "");
         } catch (Exception ex) {
             Logger.getLogger(new Date() + "\n" + UpdateDosador.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -144,77 +144,77 @@ public class UpdateDosador {
                 //System.out.println(this.dosadores.iterator());
                 for (Dosador d : this.dosadores) {
                     
-                    OUT:
-                   // if (animais.size() > 0) {
-                        for (Baias a : baia) {
-//                            if (a.getSetor() == 3) {
-//                                System.out.println("Animal da Maternidade:");
-//                            }
-
-                            if (d.getTbBaiaId() == a.getId_baia()) {
-                               /* if ((a.getExcluido() == 1)) {
-                                    a.setRFID(0);
-                                    a.setExcluido((byte) 0);
-                                }*/
-//                            System.out.println("UP L: 157 QR: "+a.getQR());
-//                            if(a.getQR()< 0){
-//                                System.out.println("Correção QR atual: "+a.getQR());
- //                               a.setQR(a.getQR()+256);
-//                                System.out.println(" QR corrigido: "+a.getQR());
- //                           }
-                                msg.setBaia(a);
-                                //Envia a mensagem na rede e aguarda a susa resposta de entrega
-                               
-                                int status_t = msg_send.sendNetworkMsgWait(d.getMac(), msg);
-                                Thread.sleep(500);
-                                if (status_t != 0) {
-                                    falhas++;
-                                    if((baia.size()-1)>i){
-                                        retorno  +="{\"id_animal\":"+a.getID()+",\"brinco\":\""+a.getBrinco()+"\",\"Status\":"+"\"Falha\"},";
-                                        
-                                    }else{
-                                       
-                                         retorno  +="{\"id_animal\":"+a.getID()+",\"brinco\":\""+a.getBrinco()+"\",\"Status\":"+"\"Falha\"}]";
-                                        
-                                    }
-                                    //System.err.println("[" + new Date() + " ]  U D: 129: Número de falhas: " + falhas);
-                                    long t = System.currentTimeMillis();
-                                    while ((status_t != 0) && (System.currentTimeMillis() - t) < 4000) {
-                                        status_t = msg_send.sendNetworkMsgWait(d.getMac(), msg);
-                                        Thread.sleep(200);
-                                    }
-                                    if (status_t == 0) {
-                                        System.out.println("Id_sistema: "+a.getId_primary() +" Id_animal: "+a.getID() +" Rfid: "+a.getRFID() +" dia_animal: "+a.getDia()+ " Qr: "+a.getQR()+" Id_dieta: "+ a.getReceipe()+" Score_animal: "+ ((byte)a.getScore())+ " t_feed_animal: "+a.getT_feed());
-                                        falhas--;
-                                        i++;
-                                    } else {
-                                        if (!d_n_sinc.equals("")) {
-                                            d_n_sinc += ",";
-                                        }
-                                        d_n_sinc += d.getTbBaiaId();
-                                    }
-                                } else {
-                                    if((baia.size()-1)>i){
-                                        retorno  +="{\"id_animal\":"+a.getID()+",\"brinco\":\""+a.getBrinco()+"\",\"Status\":"+"\"Sucesso\"},";
-                                      
-                                    }else{
-                                         retorno  +="{\"id_animal\":"+a.getID()+",\"brinco\":\""+a.getBrinco()+"\",\"Status\":"+"\"Sucesso\"}]";
-                                       
-                                    }
-                                    System.out.println("Id_sistema: "+a.getId_primary() +" Id_animal: "+a.getID() +" Rfid: "+a.getRFID() +" dia_animal: "+a.getDia()+ " Qr: "+a.getQR()+" Id_dieta: "+ a.getReceipe()+" Score_animal: "+ ((byte)a.getScore())+ " t_feed_animal: "+a.getT_feed());
-                                     i++;
-                                }
-                            } 
-                        }//fim do for animais
-                        msg.setNetwork_msg_type(MsgNetworkType.AGENTE_NEW_DEVICE_UP);
-                        msg.setNRFID((short) (max + 1));
-                        msg.setNReceipe((short) 10);
-                        msg_send.sendNetworkMsg(d.getMac(), msg);
-                        msg.setNetwork_msg_type(MsgNetworkType.AGENTE_ANIMAL_UPDATE);
-                        if (!d_sinc.equals("")) {
-                            d_sinc += ",";
-                        }
-                        d_sinc += d.getTbBaiaId();
+//                    OUT:
+//                   // if (animais.size() > 0) {
+//                        for (Baias a : baia) {
+////                            if (a.getSetor() == 3) {
+////                                System.out.println("Animal da Maternidade:");
+////                            }
+//
+//                            if (d.getTbBaiaId() == a.getId_baia()) {
+//                               /* if ((a.getExcluido() == 1)) {
+//                                    a.setRFID(0);
+//                                    a.setExcluido((byte) 0);
+//                                }*/
+////                            System.out.println("UP L: 157 QR: "+a.getQR());
+////                            if(a.getQR()< 0){
+////                                System.out.println("Correção QR atual: "+a.getQR());
+// //                               a.setQR(a.getQR()+256);
+////                                System.out.println(" QR corrigido: "+a.getQR());
+// //                           }
+//                                msg.setBaia(a);
+//                                //Envia a mensagem na rede e aguarda a susa resposta de entrega
+//                               
+//                                int status_t = msg_send.sendNetworkMsgWait(d.getMac(), msg);
+//                                Thread.sleep(500);
+//                                if (status_t != 0) {
+//                                    falhas++;
+//                                    if((baia.size()-1)>i){
+//                                        retorno  +="{\"id_animal\":"+a.getID()+",\"brinco\":\""+a.getBrinco()+"\",\"Status\":"+"\"Falha\"},";
+//                                        
+//                                    }else{
+//                                       
+//                                         retorno  +="{\"id_animal\":"+a.getID()+",\"brinco\":\""+a.getBrinco()+"\",\"Status\":"+"\"Falha\"}]";
+//                                        
+//                                    }
+//                                    //System.err.println("[" + new Date() + " ]  U D: 129: Número de falhas: " + falhas);
+//                                    long t = System.currentTimeMillis();
+//                                    while ((status_t != 0) && (System.currentTimeMillis() - t) < 4000) {
+//                                        status_t = msg_send.sendNetworkMsgWait(d.getMac(), msg);
+//                                        Thread.sleep(200);
+//                                    }
+//                                    if (status_t == 0) {
+//                                        System.out.println("Id_sistema: "+a.getId_primary() +" Id_animal: "+a.getID() +" Rfid: "+a.getRFID() +" dia_animal: "+a.getDia()+ " Qr: "+a.getQR()+" Id_dieta: "+ a.getReceipe()+" Score_animal: "+ ((byte)a.getScore())+ " t_feed_animal: "+a.getT_feed());
+//                                        falhas--;
+//                                        i++;
+//                                    } else {
+//                                        if (!d_n_sinc.equals("")) {
+//                                            d_n_sinc += ",";
+//                                        }
+//                                        d_n_sinc += d.getTbBaiaId();
+//                                    }
+//                                } else {
+//                                    if((baia.size()-1)>i){
+//                                        retorno  +="{\"id_animal\":"+a.getID()+",\"brinco\":\""+a.getBrinco()+"\",\"Status\":"+"\"Sucesso\"},";
+//                                      
+//                                    }else{
+//                                         retorno  +="{\"id_animal\":"+a.getID()+",\"brinco\":\""+a.getBrinco()+"\",\"Status\":"+"\"Sucesso\"}]";
+//                                       
+//                                    }
+//                                    System.out.println("Id_sistema: "+a.getId_primary() +" Id_animal: "+a.getID() +" Rfid: "+a.getRFID() +" dia_animal: "+a.getDia()+ " Qr: "+a.getQR()+" Id_dieta: "+ a.getReceipe()+" Score_animal: "+ ((byte)a.getScore())+ " t_feed_animal: "+a.getT_feed());
+//                                     i++;
+//                                }
+//                            } 
+//                        }//fim do for animais
+//                        msg.setNetwork_msg_type(MsgNetworkType.AGENTE_NEW_DEVICE_UP);
+//                        msg.setNRFID((short) (max + 1));
+//                        msg.setNReceipe((short) 10);
+//                        msg_send.sendNetworkMsg(d.getMac(), msg);
+//                        msg.setNetwork_msg_type(MsgNetworkType.AGENTE_ANIMAL_UPDATE);
+//                        if (!d_sinc.equals("")) {
+//                            d_sinc += ",";
+//                        }
+//                        d_sinc += d.getTbBaiaId();
                    // }
                 }
                 System.out.println("[" + new Date() + " ]  UpD: 592: Dosadores Atualizados. "+ i+" Porta" +porta);
@@ -234,31 +234,31 @@ public class UpdateDosador {
         } else {
             status = "Alerta - Nem Todos dosadores Atualizados na  Porta" +porta;
         }
-        try {
-            //Limpa a flag ag_update dos animais
-            if (baia.size() > 0) {
-                for (Baias a : baia) {
-                    if (a.getId_primary() != baia.get(0).getId_primary()) {
-                        animais_ag_up += ",";
-                    }
-                    //Limpa os IDS utilizados
-                    if (a.getRFID() == 0) {
-                        if (!ids.isEmpty()) {
-                            ids += a.getId_primary();
-                        } else {
-                            ids += "," + a.getId_primary();
-                        }
-                    }
-                    animais_ag_up += a.getId_primary();
-                }
-                new ServiceDao(this.con_str).updateBaiasSinc(animais_ag_up, ids);
-            }
-
-            //Atualiza a flag sincronizado dos dosadores
-            new ServiceDao(this.con_str).updateDosadoresSinc(d_sinc, d_n_sinc, "");
-        } catch (Exception ex) {
-            Logger.getLogger(new Date() + "\n" + UpdateDosador.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            //Limpa a flag ag_update dos animais
+//            if (baia.size() > 0) {
+//                for (Baias a : baia) {
+//                    if (a.getId_primary() != baia.get(0).getId_primary()) {
+//                        animais_ag_up += ",";
+//                    }
+//                    //Limpa os IDS utilizados
+//                    if (a.getRFID() == 0) {
+//                        if (!ids.isEmpty()) {
+//                            ids += a.getId_primary();
+//                        } else {
+//                            ids += "," + a.getId_primary();
+//                        }
+//                    }
+//                    animais_ag_up += a.getId_primary();
+//                }
+//                new ServiceDao(this.con_str).updateBaiasSinc(animais_ag_up, ids);
+//            }
+//
+//            //Atualiza a flag sincronizado dos dosadores
+//            new ServiceDao(this.con_str).updateDosadoresSinc(d_sinc, d_n_sinc, "");
+//        } catch (Exception ex) {
+//            Logger.getLogger(new Date() + "\n" + UpdateDosador.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         System.out.println(status);
         return retorno;
     }
@@ -279,52 +279,52 @@ public class UpdateDosador {
                 //System.out.println(this.dosadores.iterator());
                 for (Dosador d : this.dosadores) {
                     
-                    OUT:
-                   // if (animais.size() > 0) {
-                        for (Baias a : baia) {
-//                            if (a.getSetor() == 3) {
-//                                System.out.println("Animal da Maternidade:");
-//                            }
-                            if (d.getTbBaiaId() == a.getId_baia()) {
-
-                                msg.setBaia(a);
-                                //Envia a mensagem na rede e aguarda a susa resposta de entrega
-                               
-                                int status_t = msg_send.sendNetworkMsgWait(d.getMac(), msg);
-                                Thread.sleep(500);
-                                if (status_t != 0) {
-                                    falhas++;
-                                    //System.err.println("[" + new Date() + " ]  U D: 129: Número de falhas: " + falhas);
-                                    long t = System.currentTimeMillis();
-                                    while ((status_t != 0) && (System.currentTimeMillis() - t) < 4000) {
-                                        status_t = msg_send.sendNetworkMsgWait(d.getMac(), msg);
-                                        Thread.sleep(200);
-                                    }
-                                    if (status_t == 0) {
-                                        System.out.println("Id_sistema: "+a.getId_primary() +" Id_animal: "+a.getID() +" Rfid: "+a.getRFID() +" dia_animal: "+a.getDia()+ " Qr: "+a.getQR()+" Id_dieta: "+ a.getReceipe()+" Score_animal: "+ ((byte)a.getScore())+ " t_feed_animal: "+a.getT_feed());
-                                        falhas--;
-                                        i++;
-                                    } else {
-                                        if (!d_n_sinc.equals("")) {
-                                            d_n_sinc += ",";
-                                        }
-                                        d_n_sinc += d.getTbBaiaId();
-                                    }
-                                } else {
-                                    System.out.println("Id_sistema: "+a.getId_primary() +" Id_animal: "+a.getID() +" Rfid: "+a.getRFID() +" dia_animal: "+a.getDia()+ " Qr: "+a.getQR()+" Id_dieta: "+ a.getReceipe()+" Score_animal: "+ ((byte)a.getScore())+ " t_feed_animal: "+a.getT_feed());
-                                     i++;
-                                }
-                            } 
-                        }//fim do for animais
-                        msg.setNetwork_msg_type(MsgNetworkType.AGENTE_NEW_DEVICE_UP);
-                        msg.setNRFID((short) (max + 1));
-                        msg.setNReceipe((short) 10);
-                        msg_send.sendNetworkMsg(d.getMac(), msg);
-                        msg.setNetwork_msg_type(MsgNetworkType.AGENTE_ANIMAL_UPDATE);
-                        if (!d_sinc.equals("")) {
-                            d_sinc += ",";
-                        }
-                        d_sinc += d.getTbBaiaId();
+//                    OUT:
+//                   // if (animais.size() > 0) {
+//                        for (Baias a : baia) {
+////                            if (a.getSetor() == 3) {
+////                                System.out.println("Animal da Maternidade:");
+////                            }
+//                            if (d.getTbBaiaId() == a.getId_baia()) {
+//
+//                                msg.setBaia(a);
+//                                //Envia a mensagem na rede e aguarda a susa resposta de entrega
+//                               
+//                                int status_t = msg_send.sendNetworkMsgWait(d.getMac(), msg);
+//                                Thread.sleep(500);
+//                                if (status_t != 0) {
+//                                    falhas++;
+//                                    //System.err.println("[" + new Date() + " ]  U D: 129: Número de falhas: " + falhas);
+//                                    long t = System.currentTimeMillis();
+//                                    while ((status_t != 0) && (System.currentTimeMillis() - t) < 4000) {
+//                                        status_t = msg_send.sendNetworkMsgWait(d.getMac(), msg);
+//                                        Thread.sleep(200);
+//                                    }
+//                                    if (status_t == 0) {
+//                                        System.out.println("Id_sistema: "+a.getId_primary() +" Id_animal: "+a.getID() +" Rfid: "+a.getRFID() +" dia_animal: "+a.getDia()+ " Qr: "+a.getQR()+" Id_dieta: "+ a.getReceipe()+" Score_animal: "+ ((byte)a.getScore())+ " t_feed_animal: "+a.getT_feed());
+//                                        falhas--;
+//                                        i++;
+//                                    } else {
+//                                        if (!d_n_sinc.equals("")) {
+//                                            d_n_sinc += ",";
+//                                        }
+//                                        d_n_sinc += d.getTbBaiaId();
+//                                    }
+//                                } else {
+//                                    System.out.println("Id_sistema: "+a.getId_primary() +" Id_animal: "+a.getID() +" Rfid: "+a.getRFID() +" dia_animal: "+a.getDia()+ " Qr: "+a.getQR()+" Id_dieta: "+ a.getReceipe()+" Score_animal: "+ ((byte)a.getScore())+ " t_feed_animal: "+a.getT_feed());
+//                                     i++;
+//                                }
+//                            } 
+//                        }//fim do for animais
+//                        msg.setNetwork_msg_type(MsgNetworkType.AGENTE_NEW_DEVICE_UP);
+//                        msg.setNRFID((short) (max + 1));
+//                        msg.setNReceipe((short) 10);
+//                        msg_send.sendNetworkMsg(d.getMac(), msg);
+//                        msg.setNetwork_msg_type(MsgNetworkType.AGENTE_ANIMAL_UPDATE);
+//                        if (!d_sinc.equals("")) {
+//                            d_sinc += ",";
+//                        }
+//                        d_sinc += d.getTbBaiaId();
                    // }
                 }
                 System.out.println("[" + new Date() + " ]  UpD: 592: Dosadores Atualizados. "+ i+" Porta" +porta);
@@ -344,31 +344,31 @@ public class UpdateDosador {
         } else {
             status = "Alerta - Nem Todos dosadores Atualizados na  Porta" +porta;
         }
-        try {
-            //Limpa a flag ag_update dos animais
-            if (baia.size() > 0) {
-                for (Baias a : baia) {
-                    if (a.getId_primary() != baia.get(0).getId_primary()) {
-                        animais_ag_up += ",";
-                    }
-                    //Limpa os IDS utilizados
-                    if (a.getRFID() == 0) {
-                        if (!ids.isEmpty()) {
-                            ids += a.getId_primary();
-                        } else {
-                            ids += "," + a.getId_primary();
-                        }
-                    }
-                    animais_ag_up += a.getId_primary();
-                }
-                new ServiceDao(this.con_str).updateBaiasSinc(animais_ag_up, ids);
-            }
-
-            //Atualiza a flag sincronizado dos dosadores
-            new ServiceDao(this.con_str).updateDosadoresSinc(d_sinc, d_n_sinc, "");
-        } catch (Exception ex) {
-            Logger.getLogger(new Date() + "\n" + UpdateDosador.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            //Limpa a flag ag_update dos animais
+//            if (baia.size() > 0) {
+//                for (Baias a : baia) {
+//                    if (a.getId_primary() != baia.get(0).getId_primary()) {
+//                        animais_ag_up += ",";
+//                    }
+//                    //Limpa os IDS utilizados
+//                    if (a.getRFID() == 0) {
+//                        if (!ids.isEmpty()) {
+//                            ids += a.getId_primary();
+//                        } else {
+//                            ids += "," + a.getId_primary();
+//                        }
+//                    }
+//                    animais_ag_up += a.getId_primary();
+//                }
+//                new ServiceDao(this.con_str).updateBaiasSinc(animais_ag_up, ids);
+//            }
+//
+//            //Atualiza a flag sincronizado dos dosadores
+//            new ServiceDao(this.con_str).updateDosadoresSinc(d_sinc, d_n_sinc, "");
+//        } catch (Exception ex) {
+//            Logger.getLogger(new Date() + "\n" + UpdateDosador.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         return status;
     }
 
@@ -423,7 +423,7 @@ public class UpdateDosador {
                     }
                     d_n_sinc += dt.getTbBaiaId();
                     falhas++;
-                    new ServiceDao(con_str).insereNotificacaoTimeUpdate("Falha ao Atualizar tempos do dosador: " + Long.toHexString(dt.getMac()) + "faça a atualização individual.");
+                   // new ServiceDao(con_str).insereNotificacaoTimeUpdate("Falha ao Atualizar tempos do dosador: " + Long.toHexString(dt.getMac()) + "faça a atualização individual.");
                     System.out.println("Falha ao atulizar o Dosador :" + Long.toHexString(dt.getMac())+" Porta: "+porta);
                 }
 
@@ -444,7 +444,7 @@ public class UpdateDosador {
             status = "Nem todos os dosadores atualizados";
         }
         try {
-            new ServiceDao(con_str).updateDosadoresSinc(d_sinc, d_n_sinc, "params");
+          //  new ServiceDao(con_str).updateDosadoresSinc(d_sinc, d_n_sinc, "params");
         } catch (Exception ex) {
             Logger.getLogger(new Date() + "\n" + UpdateDosador.class.getName()).log(Level.SEVERE, null, ex);
         }

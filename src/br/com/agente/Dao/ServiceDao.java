@@ -61,7 +61,7 @@ public class ServiceDao {
         }
     }
     public ArrayList<Cordenador> buscaCordenadores() throws Exception {
-        String SQL = "call sp_lista_cordenadores()";
+        String SQL = "call sp_lista_coordenadores()";
         ArrayList<Cordenador> cordenador= new ArrayList();
         try {
            
@@ -98,10 +98,11 @@ public class ServiceDao {
         return true;
     }
     public boolean insereNotificacaoNovoDosador(String MAC) throws Exception {
-        String SQL = " call sp_insert_notificacao_novo_dosador(?) ";
+        String SQL = " call sp_insert_notificacao_novo_dosador(?,?) ";
         try {
             this.ps = conn.prepareStatement(SQL);
             this.ps.setString(1, String.format("{\"mac\":\"%s\"}", MAC));
+            this.ps.setString(2, MAC);
             this.rs = ps.executeQuery();
 
         } catch (SQLException sqle) {
@@ -238,14 +239,14 @@ public class ServiceDao {
             this.rs = this.ps.executeQuery();
             if (this.rs.next()) {
                 not.setId(this.rs.getInt("id"));
-                not.setTbTipoId(this.rs.getInt("tipo_id"));
+                not.setDescricao(this.rs.getString("codigo"));
                 not.setTbdDescricaoId(this.rs.getInt("id_descricao"));
                 not.setTbCordenadorId(this.rs.getInt("id_cordenador"));
                 not.setMac(this.rs.getString("mac"));
                 not.setLida(this.rs.getInt("lida"));
                 not.setValor(this.rs.getString("valor"));
                 not.setPorta(rs.getString("porta"));
-                not.setCode(NotificationsEnum.findType(this.rs.getInt("code")));
+                not.setCode(NotificationsEnum.findType(this.rs.getInt("tipo_id")));
             }
         } catch (SQLException sqle) {
             throw new Exception(sqle);

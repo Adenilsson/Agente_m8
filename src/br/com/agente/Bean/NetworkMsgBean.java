@@ -49,7 +49,7 @@ public class NetworkMsgBean {
     }
 
     public Grupo getGrupo() {
-        return grupo;
+        return this.grupo;
     }
 
     public void setGrupo(Grupo grupo) {
